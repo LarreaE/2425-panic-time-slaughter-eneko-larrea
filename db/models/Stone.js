@@ -9,4 +9,4 @@ const stonesSchema = new Schema({
   });
 
 
-  export const Stones = mongoose.model('Stones', stonesSchema);
+  export const Stone = mongoose.model('Stone', stonesSchema);

@@ -12,16 +12,19 @@ const characterSchema = new Schema({
       stamina: {type: Number},
     },
     equipment: {
-        saddlebag: {type: Array},
+        saddlebag: {type: Array, ref: 'Saddlebag'},
         quiver: {type: Number},
-        weapons: {type: Array},
+        weapons: {type: Array, ref: 'Weapons'},
         pouch: {
             coins: {type: Number},
-            gold: {type: Number}
+            gold: {type: Number},
+            precious_stones: {type: Array, ref: 'Stone'},
         },
         miscellaneous: {type: Array},
       },
-  });
+  },{
+    strictPopulate: false
+});
 
 
   export const Character = mongoose.model('Character', characterSchema);
