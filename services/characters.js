@@ -1,7 +1,7 @@
 import { Character } from "../db/models/Character.js";
 import { Saddlebag } from "../db/models/Saddlebag.js";
 import { Weapons } from "../db/models/Weapons.js";
-import { Stone } from "../db/models/Stone.js";
+import { Precious_stone } from "../db/models/PreciousStone.js";
 import { Time } from "../db/models/Time.js";
 
 export const getCharacters = async () => {
@@ -29,9 +29,26 @@ export const populatePlayer = async (playerId) => {
   // Poblamos el equipo
   await playerPopulated.equipment.populate('saddlebag', { 'profiles': 0 });
   await playerPopulated.equipment.populate('weapons', { 'profiles': 0 });
-  await playerPopulated.equipment.pouch.populate('stones');
+  await playerPopulated.equipment.pouch.populate('precious_stones', {'profiles': 0});
 
   
 
   return playerPopulated;
 }
+
+export const addAttributes = async (characters) => {
+  for (let i = 0; i < characters.length; i++) {
+    for (let j = 0; j < 2; j++) {
+        let rand = Math.ceil(Math.random() * 2)
+        if (rand ===1) {
+            characters[0].stats.strength++  
+            console.log(characters[0].name + " gains 1 point to strength");
+                      
+        } else {
+            characters[0].stats.dexterity++
+            console.log(characters[0].name + " gains 1 point to dexterity");
+        }  
+    }
+  }
+}
+

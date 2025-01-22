@@ -18,7 +18,7 @@ const characterSchema = new Schema({
         pouch: {
             coins: {type: Number},
             gold: {type: Number},
-            precious_stones: {type: Array, ref: 'Stone'},
+            precious_stones: {type: Array, ref: 'Precious_stone'},
         },
         miscellaneous: {type: Array},
       },
