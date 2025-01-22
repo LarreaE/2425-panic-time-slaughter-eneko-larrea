@@ -148,6 +148,7 @@ export const catatonia = async (characters) => {
       ") executes the first action!"
   );
   execute(characters[rand], characters);
+  console.log('-------------------------------------------');
 
   for (let i = 0; i < characters.length; i++) {
     if (characters[i] != characters[rand]) {
@@ -287,21 +288,100 @@ const execute = (character, characters) => {
     case "peasant":
       console.log("peasant performing action");
       for (let i = 0; i < 2; i++) {
+        
         if (character.equipment.saddlebag.length > 0) {
           const randVictim = Math.floor(Math.random() * (characters.length - 1));
           const item = character.equipment.saddlebag[0];
           characters[randVictim].equipment.saddlebag.push(item);          
           character.equipment.saddlebag.splice(0,1); //delete item
           console.log(characters[randVictim].name + ' receives one ' + item.name);
-          
         } else {
           console.log("Peasant has No consumables in the saddlebag");
         }
-        
       }
       break;
 
     default:
       break;
+  }
+};
+
+export const staminaReduce = async (characters) => {
+  const time = await Time.find()
+  const today = time[time.length-1]
+  let staminaToReduce = 2;
+  if (today.day_week === "Saturday" || today.day_week === "Sunday") {
+    staminaToReduce = 4;
+  }
+    for (let i = 0; i < characters.length; i++) {
+      characters[i].stats.stamina -= staminaToReduce;
+      console.log(characters[i].name + " reduces " + staminaToReduce +' stamina');
+    }
+};
+
+export const songs = async () => {
+  const songs = ["When fire burns within", "A side effect of recovery", "Freddy Merkury, the real wayward", "Pazus, the impassible: from boast to fail"]
+  let rand = Math.floor(Math.random() * 3); //1D10
+  console.log("The joker decides to play the song: " + songs[rand]);
+};
+
+export const staminaRecovery = async (characters) => {
+  
+  for (let i = 0; i < characters.length; i++) {
+    if (characters[i].stats.stamina > 50) {
+      console.log(characters[i].name + ' decides not to eat');
+    } else if (characters[i].stats.stamina > 20) {
+      if (characters[i].equipment.saddlebag.length > 0) {
+
+        const item = characters[i].equipment.saddlebag[0];
+        characters[i].stats.stamina += item.recover_stamina;
+        characters[i].equipment.saddlebag.splice(0,1);
+
+        console.log(characters[i].name + 'recovers ' + item.recover_stamina + ' stamina');
+        
+      } else {
+        console.log(characters[i].name + 'does not have any consumables in the saddlebag. Stamina: ' + characters[i].stats.stamina);
+      }
+    }  else if (characters[i].stats.stamina > 0) {
+      for (let j = 0; j < 2; j++) {
+        if (characters[i].equipment.saddlebag.length > 0) {
+
+          const item = characters[i].equipment.saddlebag[0];
+          characters[i].stats.stamina += item.recover_stamina;
+          characters[i].equipment.saddlebag.splice(0,1);
+  
+          console.log(characters[i].name + 'recovers ' + item.recover_stamina + ' stamina');
+          
+        } else {
+          console.log(characters[i].name + 'does not have any consumables in the saddlebag. Stamina: ' + characters[i].stats.stamina);
+        }
+      }
+    } 
+  }
+};
+
+export const weaponsQuality = async (characters) => {
+  
+  for (let i = 0; i < characters.length; i++) {
+    if (characters[i].equipment.weapons.type === "common") {
+      characters[i].equipment.weapons.quality--;
+      console.log(characters[i].name + ' weapons quality is common, reduced by 1');
+    } else {
+      characters[i].equipment.weapons.quality++;
+      if (characters[i].equipment.weapons.quality > 50) {
+        characters[i].equipment.weapons.quality = 50;
+      }
+      console.log(characters[i].name + ' weapons quality is arcane, aumented quality by 1');
+    }
+  }
+};
+
+export const sanacion = async (characters) => {
+  
+  for (let i = 0; i < characters.length; i++) {
+    let rand = Math.ceil(Math.random() * 3); //1D10
+    characters[i].stats.strength += rand;
+    console.log("The Priest Heals " + rand + " points of strength to " + characters[i].name);
+    
   }
 };
