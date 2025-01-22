@@ -1,5 +1,5 @@
 import { Character } from "../db/models/Character.js";
-import { addAttributes, catatonia, getCharacters, recolecta, sanacion, songs, staminaRecovery, staminaReduce, travesia, weaponsQuality } from "../services/characters.js";
+import { addAttributes, catatonia, getCharacters, recolecta, sanacion, songs, staminaRecovery, staminaReduce, travesia, update, weaponsQuality } from "../services/characters.js";
 import { getTime } from "../services/time.js";
 
 export const characters = async (req, res) => {
@@ -83,9 +83,8 @@ export const characters = async (req, res) => {
 
         console.log('The Party is going to sleep...');
 
-        await Character.findOneAndUpdate(
-            { $set: characters },
-        )
+        await update(characters);
+        
         res.json({time: time, characters: characters });
     } catch (error) {
         console.error('Error with the day:', error);

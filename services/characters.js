@@ -385,3 +385,13 @@ export const sanacion = async (characters) => {
     
   }
 };
+
+
+export const update = async (characters) => {
+  try {
+    // Actualizar todos los documentos
+    const result = await Character.updateMany({characters});
+  } catch (error) {
+    console.error('Error al actualizar los jugadores:', error);
+  } 
+};
